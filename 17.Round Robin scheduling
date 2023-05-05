@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<stdbool.h>
+
+
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+int main() {
+    // 
+    int n = 3;
+    int pid[] = {1, 2, 3}; 
+    int burst_time[] = {24, 3, 3};
+    int quantum = 4; // Quantum time
+
+    int waiting_time[n], turnaround_time[n];
+    for (int i = 0; i < n; i++) {
+        waiting_time[i] = 0;
+        turnaround_time[i] = 0;
+    }
+
+    
+    int remaining_time[n];
+    for (int i = 0; i < n; i++) {
+        remaining_time[i] = burst_time[i];
+    }
+
+    int time = 0;
+    bool flag = false;
+
+{
+        flag = false;
+        for (int i = 0; i < n; i++) {
+            if (remaining_time[i] > 0) {
+                flag = true;
+
+                // If the remaining burst time is less than or equal to the quantum time
+                if (remaining_time[i] <= quantum) {
+                    time += remaining_time[i];
+                    turnaround_time[i] = time;
+                    remaining_time[i] = 0;
+                }
+                // If the remaining burst time is greater than the quantum time
+                else {
+                    time += quantum;
+                    remaining_time[i] -= quantum;
+                }
+            }
+        }
+        // If all processes are done
+        if (flag == false) {
+            break;
+        }
+    }
+
+    // Calculating the waiting time and the turnaround time for each process
+    for (int i = 0; i < n; i++) {
+        waiting_time[i] = turnaround_time[i] - burst_time[i];
+    }
+
+    // Calculating the average waiting time and the average turnaround time
+    float avg_waiting_time = 0, avg_turnaround_time = 0;
+    for (int i = 0; i < n; i++) {
+        avg_waiting_time += waiting_time[i];
+        avg_turnaround_time += turnaround_time[i];
+    }
+    avg_waiting_time /= n;
+    avg_turnaround_time /= n;
+
+    // Printing the results
+    printf("Process\tBurst Time\tWaiting Time\tTurnaround Time\n");
+    for (int i = 0; i < n; i++) {
+        printf("P%d\t%d\t\t%d\t\t%d\n", pid[i], burst_time[i], waiting_time[i], turnaround_time[i]);
+    }
+    printf("\nAverage Waiting Time = %f\n", avg_waiting_time);
+    printf("Average Turnaround Time = %f\n", avg_turnaround_time);
+
+    return 0;
+}
