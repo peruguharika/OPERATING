@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DIRECTION_UP 1
+#define DIRECTION_DOWN -1
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void sort(int arr[], int n) {
+    int i, j;
+    for (i = 0; i < n-1; i++) {
+        for (j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                swap(&arr[j], &arr[j+1]);
+            }
+        }
+    }
+}
+
+int main() {
+    int n = 5;
+    int tracks[] = {55, 58, 60, 70, 18};
+    int head_pos = 50;
+    int direction = DIRECTION_UP;
+    int i, j;
+    int total_head_movement = 0;
+
+    
+    sort(tracks, n);
+
+   
+    for (i = 0; i < n; i++) {
+        if (tracks[i] >= head_pos) {
+            break;
+        }
+    }
+
+    total_head_movement += abs(tracks[i] - head_pos);
+
+ 
+    for (j = i+1; j < n; j++) {
+        total_head_movement += abs(tracks[j] - tracks[j-1]);
+    }
+
+    
+    total_head_movement += abs(tracks[n-1] - tracks[i-1]);
+
+  
+    for (j = i-2; j >= 0; j--) {
+        total_head_movement += abs(tracks[j] - tracks[j+1]);
+    }
+
+    printf("Total head movement: %d\n", total_head_movement);
+    printf("Average head movement: %d\n", total_head_movement/n);
+
+    return 0;
+}
