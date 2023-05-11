@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+#define BLOCK_SIZE 8192
+#define DIRECT_BLOCKS 12
+#define POINTERS_PER_BLOCK (BLOCK_SIZE / sizeof(int))
+#define POINTERS_PER_DOUBLE_BLOCK (POINTERS_PER_BLOCK * POINTERS_PER_BLOCK)
+#define POINTERS_PER_TRIPLE_BLOCK (POINTERS_PER_BLOCK * POINTERS_PER_BLOCK * POINTERS_PER_BLOCK)
+
+int main() {
+    int direct_blocks = DIRECT_BLOCKS;
+    int single_blocks = POINTERS_PER_BLOCK;
+    int double_blocks = POINTERS_PER_BLOCK * POINTERS_PER_BLOCK;
+    int triple_blocks = POINTERS_PER_BLOCK * POINTERS_PER_BLOCK * POINTERS_PER_BLOCK;
+    int block_size = BLOCK_SIZE;
+    int pointer_size = sizeof(int);
+    int max_direct_size = direct_blocks * block_size;
+    int max_single_size = single_blocks * block_size;
+    int max_double_size = single_blocks * max_single_size + direct_blocks * block_size;
+    int max_triple_size = single_blocks * max_double_size + direct_blocks * block_size;
+    int max_file_size = max_direct_size + max_single_size + max_double_size + max_triple_size;
+    int max_blocks = direct_blocks + single_blocks + double_blocks + triple_blocks;
+
+    printf("Maximum file size: %d bytes\n", max_file_size);
+    printf("Maximum file size: %d KB\n", max_file_size / 1024);
+    printf("Maximum file size: %d MB\n", max_file_size / (1024 * 1024));
+    printf("Maximum blocks: %d\n", max_blocks);
+
+    retrun0
+    }
