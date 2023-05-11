@@ -1,0 +1,56 @@
+#include<stdio.h>
+#include<string.h>
+
+#define MAX_USERS 3
+#define MAX_FILES 3
+
+struct file {
+    char name[20];
+    int size;
+};
+
+struct directory {
+    char name[20];
+    struct file files[MAX_FILES];
+    int num_files;
+};
+
+struct user {
+    char name[20];
+    struct directory dir;
+};
+
+struct user users[MAX_USERS];
+
+void create_user_directory(int index) {
+    printf("Enter name of user %d: ", index+1);
+    scanf("%s", users[index].name);
+    printf("Enter name of directory for user %d: ", index+1);
+    scanf("%s", users[index].dir.name);
+    users[index].dir.num_files = 0;
+}
+
+void create_file(int index) {
+    printf("Enter name of file: ");
+    scanf("%s", users[index].dir.files[users[index].dir.num_files].name);
+    printf("Enter size of file: ");
+    scanf("%d", &users[index].dir.files[users[index].dir.num_files].size);
+    users[index].dir.num_files++;
+}
+
+int main() {
+    int i, j;
+
+    for(i=0; i<MAX_USERS; i++) {
+        create_user_directory(i);
+    }
+
+    for(i=0; i<MAX_USERS; i++) {
+        printf("\nFiles for user %s in directory %s:\n", users[i].name, users[i].dir.name);
+        for(j=0; j<users[i].dir.num_files; j++) {
+            printf("%s - %d bytes\n", users[i].dir.files[j].name, users[i].dir.files[j].size);
+        }
+    }
+
+    return 0;
+}
